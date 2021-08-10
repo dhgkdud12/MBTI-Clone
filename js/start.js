@@ -1,51 +1,56 @@
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector('#result');
+
 const endPoint = 12;
-const select = []; //선택한 답변 배열
+const select = [0,0,0,0,0,0,0,0,0,0,0,0]; //선택한 답변 배열
 
 function calResult() {
-  var pointArray = [
-    {name: 'mouse', value:0, key:0},
-    {name: 'cow', value:0, key:1},
-    {name: 'tiger', value:0, key:2},
-    {name: 'rabbit', value:0, key:3},
-    {name: 'dragon', value:0, key:4},
-    {name: 'snake', value:0, key:5},
-    {name: 'horse', value:0, key:6},
-    {name: 'sheep', value:0, key:7},
-    {name: 'monkey', value:0, key:8},
-    {name: 'chick', value:0, key:9},
-    {name: 'dog', value:0, key:10},
-    {name: 'pig', value:0, key:11},
-  ]
+  // var pointArray = [
+  //   {name: 'mouse', value:0, key:0},
+  //   {name: 'cow', value:0, key:1},
+  //   {name: 'tiger', value:0, key:2},
+  //   {name: 'rabbit', value:0, key:3},
+  //   {name: 'dragon', value:0, key:4},
+  //   {name: 'snake', value:0, key:5},
+  //   {name: 'horse', value:0, key:6},
+  //   {name: 'sheep', value:0, key:7},
+  //   {name: 'monkey', value:0, key:8},
+  //   {name: 'chick', value:0, key:9},
+  //   {name: 'dog', value:0, key:10},
+  //   {name: 'pig', value:0, key:11}
+  // ]
+  //
+  // for(let i = 0; i < endPoint; i++){
+  //   var target = qnaList[i].a[select[i]]; //선택한 답변에 해당되는 동물 담김
+  //   for (let j=0;j<target.type.length; j++){
+  //     for(let k=0;k<pointArray.length;k++){
+  //       if(target.type[j] === pointArray[k].name){
+  //         pointArray[k].value += 1; //가중치 증가
+  //       }
+  //     }
+  //   }
+  //
+  // }
 
-  for(let i = 0; i < endPoint; i++){
-    var target = qnaList[i].a[select[i]]; //선택한 답변에 해당되는 동물 담김
-    for (let j=0;j<target.type.length; j++){
-      for(let k=0;k<pointArray.length;k++){
-        if(target.type[j] === pointArray[k].name){
-          pointArray[k].value += 1; //가중치 증가
-        }
-      }
-    }
-
-  }
-  var resultArray = pointArray.sort(function (a,b){
-    if(a.value > b.value){
-      return -1;
-    }
-    if (a.value < b.value){
-      return 1;
-    }
-    return 0;
-  });
-
-  console.log(resultArray);
-  let resultword = resultArray[0].key;
-  return resultword;
-
+  var result = select.indexOf(Math.max(...select));
+  return result;
 }
+  // Array = pointArray.sort(function (a,b){
+  //   if(a.value > b.value){
+  //     return -1;
+  //   }
+  //   if (a.value < b.value){
+  //     return 1;
+  //   }
+  //   return 0;
+  // });
+
+
+  // let resultword = resultArray[0].key;
+  // return resultword; //가장 많이 해당되는 동물
+// }
+
 function goResult() {
   qna.style.WebkitAnimation = "fadeOut 1s";
   qna.style.animaition = "fadeOut 1s";
@@ -82,7 +87,12 @@ function addAnswer(answerText, qIdx, idx){
       children[i].style.animaition = "fadeOut 0.5s";
     }
     setTimeout(() => {
-      select[qIdx] = idx; //몇번째 질문에서 몇번째 버튼을 클릭했는지 담김
+      var target = qnaList[qIdx].a[idx]; //선택한 답변에 해당되는 동물 담김
+      for (let j=0;j<target.type.length; j++){
+        select[type[i]] += 1;
+      }
+
+      // select[] = idx; //몇번째 질문에서 몇번째 버튼을 클릭했는지 담김
       for(let i = 0; i< children.length; i++){
         children[i].style.display = 'none';
       }
@@ -94,8 +104,9 @@ function addAnswer(answerText, qIdx, idx){
 function goNext(qIdx){
   if(qIdx === endPoint){
     goResult();
+    return;
   }
-  
+
   var q = document.querySelector('.qBox');
   q.innerHTML = qnaList[qIdx].q; //삽입, html 변경 - 질문 띄우기
   for(let i in qnaList[qIdx].a){
