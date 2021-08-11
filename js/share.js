@@ -13,18 +13,13 @@ function setShare(){
     content: {
       title: shareTitle,
       description: shareDes,
-      imageUrl:
-        shareImage,
+      imageUrl: shareImage,
       link: {
         mobileWebUrl: shareURL,
         WebUrl: shareURL
       },
     },
-    social: {
-      likeCount: 10,
-      commentCount: 20,
-      sharedCount: 30,
-    },
+    
     buttons: [
       {
         title: '결과확인하기',
